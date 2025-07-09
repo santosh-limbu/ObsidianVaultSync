@@ -10,15 +10,15 @@ import type { File, Vault } from "@shared/schema";
 export default function Editor() {
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [currentVault, setCurrentVault] = useState<Vault | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
   const [editorMode, setEditorMode] = useState<'edit' | 'preview' | 'split'>('edit');
   const [openTabs, setOpenTabs] = useState<File[]>([]);
+  const [showDemo, setShowDemo] = useState(false);
   
   const { isAuthenticated, authenticate } = useGoogleDrive();
   
   const { data: vaults, isLoading: vaultsLoading } = useQuery({
     queryKey: ['/api/vaults'],
-    enabled: isAuthenticated,
+    enabled: isAuthenticated || showDemo,
   });
 
   const { data: files, isLoading: filesLoading } = useQuery({
@@ -57,10 +57,13 @@ export default function Editor() {
     }
   }, [vaults, currentVault]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !showDemo) {
     return (
       <div className="h-screen flex items-center justify-center obsidian-bg">
-        <CloudStorageConnection onConnect={authenticate} />
+        <CloudStorageConnection 
+          onConnect={authenticate} 
+          onSkip={() => setShowDemo(true)}
+        />
       </div>
     );
   }

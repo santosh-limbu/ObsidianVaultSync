@@ -6,9 +6,10 @@ import { Loader2 } from "lucide-react";
 
 interface CloudStorageConnectionProps {
   onConnect: () => Promise<void>;
+  onSkip?: () => void;
 }
 
-export default function CloudStorageConnection({ onConnect }: CloudStorageConnectionProps) {
+export default function CloudStorageConnection({ onConnect, onSkip }: CloudStorageConnectionProps) {
   const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnect = async () => {
@@ -55,9 +56,24 @@ export default function CloudStorageConnection({ onConnect }: CloudStorageConnec
           )}
         </Button>
         
-        <div className="text-xs text-gray-500 text-center">
-          <p>Your files will remain secure and private.</p>
-          <p>We only access the folders you explicitly share.</p>
+        {onSkip && (
+          <Button
+            onClick={onSkip}
+            variant="outline"
+            className="w-full border-obsidian-border hover:obsidian-bg transition-colors"
+          >
+            Try Demo Mode
+          </Button>
+        )}
+        
+        <div className="text-xs text-center text-gray-500">
+          <p className="mb-2">Your files will remain secure and private.</p>
+          <p className="mb-3">We only access the folders you explicitly share.</p>
+          <div className="border-t border-obsidian-border pt-3">
+            <p className="text-yellow-400 font-medium">Setup Required:</p>
+            <p>To use Google Drive, you need to add yourself as a test user in Google Cloud Console.</p>
+            <p className="mt-1">See GOOGLE_OAUTH_SETUP.md for instructions.</p>
+          </div>
         </div>
       </CardContent>
     </Card>
