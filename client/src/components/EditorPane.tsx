@@ -71,13 +71,24 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
   };
 
   const handleWikilinkClick = (linkTitle: string) => {
+    console.log('Wikilink clicked:', linkTitle);
+    console.log('Available files:', files.map(f => f.name));
+    
     // Find the target file by name or path
     const targetFile = files.find(f => {
       const nameWithoutExt = f.name.replace(/\.md$/, '');
       const linkWithoutExt = linkTitle.replace(/\.md$/, '');
-      return nameWithoutExt === linkWithoutExt || f.name === linkTitle;
+      const pathWithoutExt = f.path.replace(/\.md$/, '').replace(/^\//, '');
+      
+      return nameWithoutExt === linkWithoutExt || 
+             f.name === linkTitle || 
+             f.name === `${linkTitle}.md` ||
+             pathWithoutExt === linkWithoutExt ||
+             nameWithoutExt.toLowerCase() === linkWithoutExt.toLowerCase();
     });
 
+    console.log('Target file found:', targetFile);
+    
     if (targetFile) {
       onFileSelect(targetFile);
     }

@@ -3,7 +3,9 @@ export function processWikilinks(content: string): string {
   return content.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
     const [title, displayText] = linkText.split('|');
     const display = displayText || title;
-    return `[${display}](wikilink:${title})`;
+    const result = `[${display}](wikilink:${title})`;
+    console.log('Processed wikilink:', match, '->', result);
+    return result;
   });
 }
 
