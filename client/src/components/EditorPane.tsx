@@ -81,9 +81,8 @@ export default function EditorPane({ file, mode, vault }: EditorPaneProps) {
     return (
       <div className="flex-1 obsidian-bg">
         <ScrollArea className="h-full">
-          <div className="p-6 max-w-4xl mx-auto">
+          <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none">
             <ReactMarkdown
-              className="prose prose-invert max-w-none"
               components={{
                 a: ({ href, children, ...props }) => {
                   if (href?.startsWith('[[') && href?.endsWith(']]')) {
@@ -181,9 +180,8 @@ export default function EditorPane({ file, mode, vault }: EditorPaneProps) {
       
       <div className="flex-1 obsidian-bg">
         <ScrollArea className="h-full">
-          <div className="p-6">
+          <div className="p-6 prose prose-invert max-w-none">
             <ReactMarkdown
-              className="prose prose-invert max-w-none"
               components={{
                 a: ({ href, children, ...props }) => {
                   if (href?.startsWith('[[') && href?.endsWith(']]')) {
