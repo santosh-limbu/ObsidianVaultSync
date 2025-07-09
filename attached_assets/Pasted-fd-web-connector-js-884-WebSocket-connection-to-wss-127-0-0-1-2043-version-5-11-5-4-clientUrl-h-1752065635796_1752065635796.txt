@@ -1,0 +1,123 @@
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2043/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+trans_defs.js:2907 Imprivata CE >> Creating LogHelper_Content
+confirmid_content.js:286 Imprivata CE >> setUp (confirmid_content)
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2020/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:937
+fdWebExtension.fdReconnect @ fd-web-connector.js:900
+fdWebExtension.fdHandleFocusChange @ fd-web-connector.js:804
+fdWebExtension.fdFocusListener @ fd-web-connector.js:790
+n @ _app-47f5cf28e18519c8.js:38
+trans_defs.js:2862 Imprivata CE >> onCompleted_CID for https://01c827a5-b9c8-437f-83cb-a8396aa03ba7-00-2nu4zl0m1v092.spock.replit.dev/ (confirmid_content.js:281)
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2028/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2033/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2031/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2034/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2043/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2035/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2022/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2042/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2041/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2037/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2020/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:962
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2023/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2046/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2040/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2030/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2024/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2045/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2027/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2029/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2032/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2047/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2021/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2026/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2038/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2039/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2036/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2025/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 
+fdWebExtension.fdTryOpenPort @ fd-web-connector.js:884
+fdWebExtension.fdReconnectWebSocket @ fd-web-connector.js:961
+(anonymous) @ fd-web-connector.js:1160
+fd-web-connector.js:884  WebSocket connection to 'wss://127.0.0.1:2044/?version=5.11.5.4&clientUrl=https%3A%2F%2Freplit.com%2F%40oxslimbu%2FObsidianVaultSync' failed: 

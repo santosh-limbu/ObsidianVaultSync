@@ -5,7 +5,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { processWikilinks } from "@/lib/markdownUtils";
 import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
 import FloatingToolbar from "./FloatingToolbar";
 import type { File, Vault } from "@shared/schema";
 
@@ -87,6 +86,31 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
       '_': '_',
     };
     
+    const reversePairs: { [key: string]: string } = {};
+    Object.entries(pairs).forEach(([open, close]) => {
+      reversePairs[close] = open;
+    });
+    
+    // Handle bracket deletion
+    if (e.key === 'Backspace' && selectionStart === selectionEnd && selectionStart > 0) {
+      const charBeforeCursor = content[selectionStart - 1];
+      const charAfterCursor = content[selectionStart];
+      
+      // Check if we're deleting an opening bracket with its closing pair right after cursor
+      if (pairs[charBeforeCursor] && charAfterCursor === pairs[charBeforeCursor]) {
+        e.preventDefault();
+        const before = content.substring(0, selectionStart - 1);
+        const after = content.substring(selectionStart + 1);
+        setContent(before + after);
+        
+        setTimeout(() => {
+          target.selectionStart = target.selectionEnd = selectionStart - 1;
+        }, 0);
+        return;
+      }
+    }
+    
+    // Handle bracket insertion
     if (pairs[e.key]) {
       e.preventDefault();
       const before = content.substring(0, selectionStart);
@@ -208,7 +232,6 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
         <ScrollArea className="h-full">
           <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none">
             <ReactMarkdown
-              rehypePlugins={[rehypeRaw]}
               components={{
                 a: ({ href, children, ...props }) => {
                   if (href?.startsWith('wikilink:')) {
@@ -316,7 +339,6 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
         <ScrollArea className="h-full">
           <div className="p-6 prose prose-invert max-w-none">
             <ReactMarkdown
-              rehypePlugins={[rehypeRaw]}
               components={{
                 a: ({ href, children, ...props }) => {
                   if (href?.startsWith('wikilink:')) {
