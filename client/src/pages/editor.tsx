@@ -136,6 +136,8 @@ Start writing your thoughts here...
           vault={currentVault}
           onModeChange={setEditorMode}
           onNewNote={handleNewNote}
+          onFileSelect={handleFileSelect}
+          files={files || []}
         />
       </div>
     </div>

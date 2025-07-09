@@ -14,9 +14,11 @@ interface EditorPaneProps {
   vault: Vault | null;
   onModeChange: (mode: 'edit' | 'preview' | 'split') => void;
   onNewNote: () => void;
+  onFileSelect: (file: File) => void;
+  files: File[];
 }
 
-export default function EditorPane({ file, mode, vault, onModeChange, onNewNote }: EditorPaneProps) {
+export default function EditorPane({ file, mode, vault, onModeChange, onNewNote, onFileSelect, files }: EditorPaneProps) {
   const [content, setContent] = useState("");
   const [originalContent, setOriginalContent] = useState("");
   
@@ -66,6 +68,19 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote 
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
+  };
+
+  const handleWikilinkClick = (linkTitle: string) => {
+    // Find the target file by name or path
+    const targetFile = files.find(f => {
+      const nameWithoutExt = f.name.replace(/\.md$/, '');
+      const linkWithoutExt = linkTitle.replace(/\.md$/, '');
+      return nameWithoutExt === linkWithoutExt || f.name === linkTitle;
+    });
+
+    if (targetFile) {
+      onFileSelect(targetFile);
+    }
   };
 
   const processedContent = processWikilinks(content);
@@ -129,11 +144,16 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote 
             <ReactMarkdown
               components={{
                 a: ({ href, children, ...props }) => {
-                  if (href?.startsWith('[[') && href?.endsWith(']]')) {
+                  if (href?.startsWith('wikilink:')) {
+                    const linkTitle = href.replace('wikilink:', '');
                     return (
                       <a 
-                        href="#" 
-                        className="wikilink"
+                        href="#"
+                        className="wikilink text-obsidian-accent hover:text-obsidian-secondary cursor-pointer underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleWikilinkClick(linkTitle);
+                        }}
                         {...props}
                       >
                         {children}
@@ -234,11 +254,16 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote 
             <ReactMarkdown
               components={{
                 a: ({ href, children, ...props }) => {
-                  if (href?.startsWith('[[') && href?.endsWith(']]')) {
+                  if (href?.startsWith('wikilink:')) {
+                    const linkTitle = href.replace('wikilink:', '');
                     return (
                       <a 
-                        href="#" 
-                        className="wikilink"
+                        href="#"
+                        className="wikilink text-obsidian-accent hover:text-obsidian-secondary cursor-pointer underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleWikilinkClick(linkTitle);
+                        }}
                         {...props}
                       >
                         {children}
