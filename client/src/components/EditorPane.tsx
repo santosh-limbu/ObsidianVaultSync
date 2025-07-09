@@ -146,7 +146,7 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
     console.log('Available files:', files);
     
     // Find the target file by name or path
-    const targetFile = files.find(f => {
+    const targetFile = files?.find(f => {
       const nameWithoutExt = f.name.replace(/\.md$/, '');
       const linkWithoutExt = linkTitle.replace(/\.md$/, '');
       const pathWithoutExt = f.path.replace(/\.md$/, '').replace(/^\//, '');
@@ -169,6 +169,7 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
       onFileSelect(targetFile);
     } else {
       console.log('No matching file found for:', linkTitle);
+      console.log('Files available:', files?.map(f => ({ name: f.name, path: f.path })));
     }
   };
 
