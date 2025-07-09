@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import TopBar from "@/components/TopBar";
 import FileExplorer from "@/components/FileExplorer";
 import EditorPane from "@/components/EditorPane";
@@ -15,6 +16,7 @@ export default function Editor() {
   const [showDemo, setShowDemo] = useState(false);
   
   const { isAuthenticated, authenticate } = useGoogleDrive();
+  const queryClient = useQueryClient();
   
   const { data: vaults, isLoading: vaultsLoading } = useQuery({
     queryKey: ['/api/vaults'],
@@ -24,6 +26,30 @@ export default function Editor() {
   const { data: files, isLoading: filesLoading } = useQuery({
     queryKey: ['/api/vaults', currentVault?.id, 'files'],
     enabled: !!currentVault,
+  });
+
+  const createNoteMutation = useMutation({
+    mutationFn: async (newNote: { name: string; content: string }) => {
+      if (!currentVault) throw new Error('No vault selected');
+      
+      return await apiRequest(`/api/files`, {
+        method: 'POST',
+        body: JSON.stringify({
+          vaultId: currentVault.id,
+          name: newNote.name,
+          content: newNote.content,
+          path: `/${newNote.name}`,
+          isFolder: false,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    },
+    onSuccess: (newFile) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/vaults', currentVault?.id, 'files'] });
+      handleFileSelect(newFile);
+    },
   });
 
   const handleFileSelect = (file: File) => {
@@ -51,6 +77,22 @@ export default function Editor() {
     setOpenTabs([]);
   };
 
+  const handleNewNote = () => {
+    const timestamp = new Date().toISOString().split('T')[0];
+    const noteName = `New Note ${timestamp}.md`;
+    const noteContent = `# New Note
+
+Created on ${new Date().toLocaleDateString()}
+
+Start writing your thoughts here...
+`;
+    
+    createNoteMutation.mutate({
+      name: noteName,
+      content: noteContent,
+    });
+  };
+
   useEffect(() => {
     if (vaults && vaults.length > 0 && !currentVault) {
       setCurrentVault(vaults[0]);
@@ -73,8 +115,6 @@ export default function Editor() {
       <TopBar
         currentFile={currentFile}
         currentVault={currentVault}
-        editorMode={editorMode}
-        onModeChange={setEditorMode}
         openTabs={openTabs}
         onTabClose={handleTabClose}
         onTabSelect={handleFileSelect}
@@ -94,6 +134,8 @@ export default function Editor() {
           file={currentFile}
           mode={editorMode}
           vault={currentVault}
+          onModeChange={setEditorMode}
+          onNewNote={handleNewNote}
         />
       </div>
     </div>

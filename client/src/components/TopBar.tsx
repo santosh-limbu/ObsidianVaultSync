@@ -10,8 +10,6 @@ import type { File, Vault } from "@shared/schema";
 interface TopBarProps {
   currentFile: File | null;
   currentVault: Vault | null;
-  editorMode: 'edit' | 'preview' | 'split';
-  onModeChange: (mode: 'edit' | 'preview' | 'split') => void;
   openTabs: File[];
   onTabClose: (fileId: number) => void;
   onTabSelect: (file: File) => void;
@@ -22,8 +20,6 @@ interface TopBarProps {
 export default function TopBar({
   currentFile,
   currentVault,
-  editorMode,
-  onModeChange,
   openTabs,
   onTabClose,
   onTabSelect,
@@ -126,29 +122,10 @@ export default function TopBar({
         </div>
       )}
 
-      {/* Editor controls */}
+      {/* File statistics */}
       {currentFile && (
-        <div className="px-4 py-2 flex items-center justify-between border-b border-obsidian-border">
-          <div className="flex items-center space-x-4">
-            <Tabs value={editorMode} onValueChange={onModeChange}>
-              <TabsList className="obsidian-bg">
-                <TabsTrigger value="edit" className="text-sm">
-                  <Edit className="w-4 h-4 mr-1" />
-                  Edit
-                </TabsTrigger>
-                <TabsTrigger value="preview" className="text-sm">
-                  <Eye className="w-4 h-4 mr-1" />
-                  Preview
-                </TabsTrigger>
-                <TabsTrigger value="split" className="text-sm">
-                  <Columns className="w-4 h-4 mr-1" />
-                  Split
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-          
-          <div className="flex items-center space-x-2 text-sm text-gray-400">
+        <div className="px-4 py-2 border-b border-obsidian-border">
+          <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
             <span>Lines: {stats.lines}</span>
             <span>|</span>
             <span>Words: {stats.words}</span>

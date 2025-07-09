@@ -5,19 +5,51 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { processWikilinks } from "@/lib/markdownUtils";
 import ReactMarkdown from "react-markdown";
+import FloatingToolbar from "./FloatingToolbar";
 import type { File, Vault } from "@shared/schema";
 
 interface EditorPaneProps {
   file: File | null;
   mode: 'edit' | 'preview' | 'split';
   vault: Vault | null;
+  onModeChange: (mode: 'edit' | 'preview' | 'split') => void;
+  onNewNote: () => void;
 }
 
-export default function EditorPane({ file, mode, vault }: EditorPaneProps) {
+export default function EditorPane({ file, mode, vault, onModeChange, onNewNote }: EditorPaneProps) {
   const [content, setContent] = useState("");
   const [originalContent, setOriginalContent] = useState("");
   
   const { save, isSaving, lastSaved } = useAutoSave(file, content);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key) {
+          case 'e':
+            e.preventDefault();
+            onModeChange('edit');
+            break;
+          case 'r':
+            e.preventDefault();
+            onModeChange('preview');
+            break;
+          case 'd':
+            e.preventDefault();
+            onModeChange('split');
+            break;
+          case 'n':
+            e.preventDefault();
+            onNewNote();
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onModeChange, onNewNote]);
 
   useEffect(() => {
     if (file) {
@@ -58,7 +90,13 @@ export default function EditorPane({ file, mode, vault }: EditorPaneProps) {
 
   if (mode === 'edit') {
     return (
-      <div className="flex-1 obsidian-editor">
+      <div className="flex-1 obsidian-editor relative">
+        <FloatingToolbar
+          editorMode={mode}
+          onModeChange={onModeChange}
+          currentVault={vault}
+          onNewNote={onNewNote}
+        />
         <div className="h-full p-4">
           <Textarea
             value={content}
@@ -79,7 +117,13 @@ export default function EditorPane({ file, mode, vault }: EditorPaneProps) {
 
   if (mode === 'preview') {
     return (
-      <div className="flex-1 obsidian-bg">
+      <div className="flex-1 obsidian-bg relative">
+        <FloatingToolbar
+          editorMode={mode}
+          onModeChange={onModeChange}
+          currentVault={vault}
+          onNewNote={onNewNote}
+        />
         <ScrollArea className="h-full">
           <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none">
             <ReactMarkdown
@@ -160,7 +204,13 @@ export default function EditorPane({ file, mode, vault }: EditorPaneProps) {
 
   // Split mode
   return (
-    <div className="flex-1 flex">
+    <div className="flex-1 flex relative">
+      <FloatingToolbar
+        editorMode={mode}
+        onModeChange={onModeChange}
+        currentVault={vault}
+        onNewNote={onNewNote}
+      />
       <div className="flex-1 obsidian-editor border-r border-obsidian-border">
         <div className="h-full p-4">
           <Textarea
