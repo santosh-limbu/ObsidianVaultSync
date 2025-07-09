@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(229, 84%, 5%);
+  --muted: hsl(210, 40%, 98%);
+  --muted-foreground: hsl(215, 13%, 65%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(229, 84%, 5%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(229, 84%, 5%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --primary: hsl(262, 83%, 58%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(222, 84%, 4%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(222, 84%, 4%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(229, 84%, 5%);
+  --radius: 0.5rem;
+  
+  /* Obsidian colors */
+  --obsidian-primary: hsl(262, 83%, 58%);
+  --obsidian-secondary: hsl(258, 90%, 66%);
+  --obsidian-bg: hsl(0, 0%, 12%);
+  --obsidian-text: hsl(220, 13%, 91%);
+  --obsidian-accent: hsl(258, 90%, 66%);
+  --obsidian-editor: hsl(0, 0%, 18%);
+  --obsidian-sidebar: hsl(0, 0%, 15%);
+  --obsidian-border: hsl(0, 0%, 25%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 12%);
+  --foreground: hsl(220, 13%, 91%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(215, 13%, 65%);
+  --popover: hsl(0, 0%, 12%);
+  --popover-foreground: hsl(220, 13%, 91%);
+  --card: hsl(0, 0%, 12%);
+  --card-foreground: hsl(220, 13%, 91%);
+  --border: hsl(0, 0%, 25%);
+  --input: hsl(0, 0%, 25%);
+  --primary: hsl(262, 83%, 58%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(0, 0%, 15%);
+  --secondary-foreground: hsl(220, 13%, 91%);
+  --accent: hsl(0, 0%, 15%);
+  --accent-foreground: hsl(220, 13%, 91%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(220, 13%, 91%);
+  --ring: hsl(212, 12%, 84%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-color: var(--obsidian-bg);
+    color: var(--obsidian-text);
+  }
+}
+
+@layer utilities {
+  .obsidian-bg { background-color: var(--obsidian-bg); }
+  .obsidian-text { color: var(--obsidian-text); }
+  .obsidian-primary { background-color: var(--obsidian-primary); }
+  .obsidian-secondary { background-color: var(--obsidian-secondary); }
+  .obsidian-accent { background-color: var(--obsidian-accent); }
+  .obsidian-editor { background-color: var(--obsidian-editor); }
+  .obsidian-sidebar { background-color: var(--obsidian-sidebar); }
+  .obsidian-border { border-color: var(--obsidian-border); }
+  
+  .text-obsidian-primary { color: var(--obsidian-primary); }
+  .text-obsidian-secondary { color: var(--obsidian-secondary); }
+  .text-obsidian-accent { color: var(--obsidian-accent); }
+  .text-obsidian-text { color: var(--obsidian-text); }
+  
+  .border-obsidian-border { border-color: var(--obsidian-border); }
+  
+  .hover\:obsidian-secondary:hover { background-color: var(--obsidian-secondary); }
+}
+
+/* Monaco Editor custom styling */
+.monaco-editor {
+  background-color: var(--obsidian-editor) !important;
+}
+
+.monaco-editor .margin {
+  background-color: var(--obsidian-editor) !important;
+}
+
+.monaco-editor .monaco-editor-background {
+  background-color: var(--obsidian-editor) !important;
+}
+
+/* Wikilink styling */
+.wikilink {
+  color: var(--obsidian-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.wikilink:hover {
+  text-decoration: underline;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--obsidian-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--obsidian-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--obsidian-accent);
+}
