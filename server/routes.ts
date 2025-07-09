@@ -129,7 +129,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/google/callback", async (req, res) => {
     try {
       const { code } = req.body;
-      const { tokens } = await oauth2Client.getAccessToken(code);
+      const { tokens } = await oauth2Client.getToken(code);
       oauth2Client.setCredentials(tokens);
       
       res.json({ success: true, tokens });

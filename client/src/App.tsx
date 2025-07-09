@@ -5,11 +5,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Editor from "@/pages/editor";
+import AuthCallback from "@/pages/auth-callback";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Editor} />
+      <Route path="/auth/callback" component={AuthCallback} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -2,6 +2,7 @@ import { useCallback, useRef, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useGoogleDrive } from "@/hooks/useGoogleDrive";
 import type { File } from "@shared/schema";
 
 interface UseAutoSaveReturn {
@@ -18,6 +19,7 @@ export function useAutoSave(
 ): UseAutoSaveReturn {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { updateFileContent, isAuthenticated } = useGoogleDrive();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastSavedRef = useRef<Date | null>(null);
   const originalContentRef = useRef<string>("");
@@ -27,11 +29,23 @@ export function useAutoSave(
     mutationFn: async (data: { content: string }) => {
       if (!file) throw new Error("No file selected");
       
+      // Save to local storage first
       const response = await apiRequest(
         "PUT",
         `/api/files/${file.id}`,
         data
       );
+      
+      // Then sync to Google Drive if authenticated and file has driveFileId
+      if (isAuthenticated && file.driveFileId) {
+        try {
+          await updateFileContent(file.driveFileId, data.content);
+        } catch (error) {
+          console.warn("Failed to sync to Google Drive:", error);
+          // Don't fail the entire save operation if Google Drive sync fails
+        }
+      }
+      
       return response.json();
     },
     onSuccess: () => {

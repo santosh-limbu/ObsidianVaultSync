@@ -70,7 +70,6 @@ export default function Editor() {
       <TopBar
         currentFile={currentFile}
         currentVault={currentVault}
-        isConnected={isConnected}
         editorMode={editorMode}
         onModeChange={setEditorMode}
         openTabs={openTabs}

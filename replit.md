@@ -8,6 +8,16 @@ This is a full-stack web application that replicates the core functionality of O
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (January 2025)
+
+- ✓ Added real-time cloud sync functionality to Google Drive
+- ✓ Implemented auto-save with Google Drive integration
+- ✓ Created OAuth callback page for Google authentication
+- ✓ Added demo vault with sample files for testing
+- ✓ Enhanced TopBar with live file statistics and sync status
+- ✓ Fixed TypeScript errors in storage and routes
+- ✓ Updated auto-save hook to sync changes to cloud as they happen
+
 ## System Architecture
 
 ### Frontend Architecture

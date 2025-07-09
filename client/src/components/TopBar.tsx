@@ -1,31 +1,46 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Eye, Edit, Columns, Settings, CheckCircle, Save, X } from "lucide-react";
+import { Eye, Edit, Columns, Settings, CheckCircle, Save, X, Clock } from "lucide-react";
 import { SiGoogledrive } from "react-icons/si";
+import { useGoogleDrive } from "@/hooks/useGoogleDrive";
+import { getWordCount, getCharacterCount, getLineCount } from "@/lib/markdownUtils";
 import type { File, Vault } from "@shared/schema";
 
 interface TopBarProps {
   currentFile: File | null;
   currentVault: Vault | null;
-  isConnected: boolean;
   editorMode: 'edit' | 'preview' | 'split';
   onModeChange: (mode: 'edit' | 'preview' | 'split') => void;
   openTabs: File[];
   onTabClose: (fileId: number) => void;
   onTabSelect: (file: File) => void;
+  isSaving?: boolean;
+  lastSaved?: Date | null;
 }
 
 export default function TopBar({
   currentFile,
   currentVault,
-  isConnected,
   editorMode,
   onModeChange,
   openTabs,
   onTabClose,
   onTabSelect,
+  isSaving = false,
+  lastSaved,
 }: TopBarProps) {
+  const { isAuthenticated } = useGoogleDrive();
+  
+  const getFileStats = (content: string = "") => {
+    return {
+      lines: getLineCount(content),
+      words: getWordCount(content),
+      characters: getCharacterCount(content),
+    };
+  };
+  
+  const stats = getFileStats(currentFile?.content || "");
   return (
     <div className="obsidian-sidebar border-b border-obsidian-border">
       {/* Main toolbar */}
@@ -48,15 +63,26 @@ export default function TopBar({
           {/* Cloud Storage Status */}
           <div className="flex items-center space-x-2 obsidian-bg px-3 py-1.5 rounded-lg">
             <SiGoogledrive className="text-blue-400 text-sm" />
-            <span className={`text-sm ${isConnected ? 'text-green-400' : 'text-red-400'}`}>
-              {isConnected ? 'Connected' : 'Disconnected'}
+            <span className={`text-sm ${isAuthenticated ? 'text-green-400' : 'text-red-400'}`}>
+              {isAuthenticated ? 'Connected' : 'Disconnected'}
             </span>
           </div>
           
           {/* Save Status */}
           <div className="flex items-center space-x-2 text-sm">
-            <CheckCircle className="w-4 h-4 text-green-400" />
-            <span className="text-green-400">Saved</span>
+            {isSaving ? (
+              <>
+                <Clock className="w-4 h-4 text-yellow-400 animate-spin" />
+                <span className="text-yellow-400">Saving...</span>
+              </>
+            ) : (
+              <>
+                <CheckCircle className="w-4 h-4 text-green-400" />
+                <span className="text-green-400">
+                  {lastSaved ? `Saved ${lastSaved.toLocaleTimeString()}` : 'Saved'}
+                </span>
+              </>
+            )}
           </div>
           
           {/* Actions */}
@@ -123,11 +149,11 @@ export default function TopBar({
           </div>
           
           <div className="flex items-center space-x-2 text-sm text-gray-400">
-            <span>Lines: 23</span>
+            <span>Lines: {stats.lines}</span>
             <span>|</span>
-            <span>Words: 156</span>
+            <span>Words: {stats.words}</span>
             <span>|</span>
-            <span>Characters: 892</span>
+            <span>Characters: {stats.characters}</span>
           </div>
         </div>
       )}

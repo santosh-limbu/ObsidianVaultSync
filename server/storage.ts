@@ -28,6 +28,123 @@ export class MemStorage implements IStorage {
     this.files = new Map();
     this.currentVaultId = 1;
     this.currentFileId = 1;
+    this.initializeDemoData();
+  }
+
+  private async initializeDemoData() {
+    // Create a demo vault
+    const demoVault = await this.createVault({
+      name: "Demo Vault",
+      folderId: "demo-folder-id",
+      isConnected: false,
+    });
+
+    // Create some sample files
+    await this.createFile({
+      vaultId: demoVault.id,
+      name: "Welcome.md",
+      path: "/Welcome.md",
+      content: `# Welcome to Obsidian Web Vault
+
+This is a web-based Obsidian vault editor that connects to your Google Drive to sync your markdown files.
+
+## Features
+
+- **Real-time editing** with live preview
+- **Wikilinks** for connecting notes: [[Another Note]]
+- **Google Drive sync** for cloud storage
+- **Obsidian-style interface** with dark theme
+- **Auto-save** functionality
+
+## Getting Started
+
+1. Connect your Google Drive account
+2. Select a folder to use as your vault
+3. Start editing your notes!
+
+## Wikilinks
+
+You can link to other notes using double brackets: [[Note Name]]
+
+This creates connections between your notes, just like in Obsidian.`,
+      isFolder: false,
+      driveFileId: null,
+      parentId: null,
+    });
+
+    await this.createFile({
+      vaultId: demoVault.id,
+      name: "Another Note.md",
+      path: "/Another Note.md",
+      content: `# Another Note
+
+This is another note in your vault.
+
+## Backlinks
+
+This note is linked from [[Welcome]].
+
+## More Content
+
+You can write anything here - thoughts, ideas, documentation, or any other content.
+
+### Code Examples
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello, World!");
+}
+\`\`\`
+
+### Lists
+
+- Item 1
+- Item 2
+- Item 3
+
+### Tasks
+
+- [ ] Todo item
+- [x] Completed item`,
+      isFolder: false,
+      driveFileId: null,
+      parentId: null,
+    });
+
+    // Create a folder
+    const folder = await this.createFile({
+      vaultId: demoVault.id,
+      name: "Notes",
+      path: "/Notes",
+      content: "",
+      isFolder: true,
+      driveFileId: null,
+      parentId: null,
+    });
+
+    // Create a file inside the folder
+    await this.createFile({
+      vaultId: demoVault.id,
+      name: "Daily Note.md",
+      path: "/Notes/Daily Note.md",
+      content: `# Daily Note
+
+Today's thoughts and tasks.
+
+## Tasks
+- [ ] Review project updates
+- [ ] Update documentation  
+- [ ] Plan next features
+
+## Notes
+
+This is a note inside the Notes folder.
+
+Connected to: [[Welcome]]`,
+      isFolder: false,
+      driveFileId: null,
+      parentId: folder.id,
+    });
   }
 
   async getVault(id: number): Promise<Vault | undefined> {
@@ -39,6 +156,7 @@ export class MemStorage implements IStorage {
     const vault: Vault = {
       ...insertVault,
       id,
+      isConnected: insertVault.isConnected ?? false,
       lastSync: new Date(),
     };
     this.vaults.set(id, vault);
@@ -77,6 +195,11 @@ export class MemStorage implements IStorage {
     const file: File = {
       ...insertFile,
       id,
+      vaultId: insertFile.vaultId ?? null,
+      content: insertFile.content ?? "",
+      driveFileId: insertFile.driveFileId ?? null,
+      isFolder: insertFile.isFolder ?? false,
+      parentId: insertFile.parentId ?? null,
       lastModified: new Date(),
     };
     this.files.set(id, file);
