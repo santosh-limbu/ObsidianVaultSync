@@ -17,6 +17,9 @@ Preferred communication style: Simple, everyday language.
 - ✓ Enhanced TopBar with live file statistics and sync status
 - ✓ Fixed TypeScript errors in storage and routes
 - ✓ Updated auto-save hook to sync changes to cloud as they happen
+- ✓ Fixed wikilinks with spaces rendering as HTML links
+- ✓ Added auto-closing brackets with proper text selection handling
+- → Working on fixing wikilink navigation issues
 
 ## System Architecture
 

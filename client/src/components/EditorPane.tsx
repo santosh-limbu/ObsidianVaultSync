@@ -96,19 +96,30 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
       const newContent = before + e.key + selected + pairs[e.key] + after;
       setContent(newContent);
       
-      // Set cursor position between the brackets
+      // Set cursor position and maintain selection
       setTimeout(() => {
-        target.selectionStart = target.selectionEnd = selectionStart + 1 + selected.length;
+        if (selected.length > 0) {
+          // If text was selected, reselect it within the new brackets
+          target.selectionStart = selectionStart + 1;
+          target.selectionEnd = selectionStart + 1 + selected.length;
+        } else {
+          // If no text selected, place cursor between brackets
+          target.selectionStart = target.selectionEnd = selectionStart + 1;
+        }
       }, 0);
     }
   };
 
   const handleWikilinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    e.stopPropagation();
+    
     const href = e.currentTarget.getAttribute('href');
     if (!href?.startsWith('wikilink:')) return;
     
     const linkTitle = decodeURIComponent(href.replace('wikilink:', ''));
+    console.log('Wikilink clicked:', linkTitle);
+    console.log('Available files:', files);
     
     // Find the target file by name or path
     const targetFile = files.find(f => {
@@ -116,15 +127,24 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
       const linkWithoutExt = linkTitle.replace(/\.md$/, '');
       const pathWithoutExt = f.path.replace(/\.md$/, '').replace(/^\//, '');
       
-      return nameWithoutExt === linkWithoutExt || 
+      const matches = nameWithoutExt === linkWithoutExt || 
              f.name === linkTitle || 
              f.name === `${linkTitle}.md` ||
              pathWithoutExt === linkWithoutExt ||
              nameWithoutExt.toLowerCase() === linkWithoutExt.toLowerCase();
+             
+      if (matches) {
+        console.log('Found matching file:', f);
+      }
+      
+      return matches;
     });
     
     if (targetFile) {
+      console.log('Selecting file:', targetFile);
       onFileSelect(targetFile);
+    } else {
+      console.log('No matching file found for:', linkTitle);
     }
   };
 
@@ -186,15 +206,25 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
           onNewNote={onNewNote}
         />
         <ScrollArea className="h-full">
-          <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none" onClick={(e: any) => {
-            // Handle clicks on wikilinks
-            if (e.target.tagName === 'A' && e.target.getAttribute('href')?.startsWith('wikilink:')) {
-              handleWikilinkClick(e);
-            }
-          }}>
+          <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none">
             <ReactMarkdown
               rehypePlugins={[rehypeRaw]}
               components={{
+                a: ({ href, children, ...props }) => {
+                  if (href?.startsWith('wikilink:')) {
+                    return (
+                      <a 
+                        href={href}
+                        className="wikilink text-obsidian-accent hover:text-obsidian-secondary cursor-pointer"
+                        onClick={handleWikilinkClick}
+                        {...props}
+                      >
+                        {children}
+                      </a>
+                    );
+                  }
+                  return <a href={href} {...props}>{children}</a>;
+                },
                 h1: ({ children, ...props }) => (
                   <h1 className="text-2xl font-bold text-obsidian-text mb-4" {...props}>
                     {children}
@@ -284,15 +314,25 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
       
       <div className="flex-1 obsidian-bg">
         <ScrollArea className="h-full">
-          <div className="p-6 prose prose-invert max-w-none" onClick={(e: any) => {
-            // Handle clicks on wikilinks
-            if (e.target.tagName === 'A' && e.target.getAttribute('href')?.startsWith('wikilink:')) {
-              handleWikilinkClick(e);
-            }
-          }}>
+          <div className="p-6 prose prose-invert max-w-none">
             <ReactMarkdown
               rehypePlugins={[rehypeRaw]}
               components={{
+                a: ({ href, children, ...props }) => {
+                  if (href?.startsWith('wikilink:')) {
+                    return (
+                      <a 
+                        href={href}
+                        className="wikilink text-obsidian-accent hover:text-obsidian-secondary cursor-pointer"
+                        onClick={handleWikilinkClick}
+                        {...props}
+                      >
+                        {children}
+                      </a>
+                    );
+                  }
+                  return <a href={href} {...props}>{children}</a>;
+                },
                 h1: ({ children, ...props }) => (
                   <h1 className="text-2xl font-bold text-obsidian-text mb-4" {...props}>
                     {children}
