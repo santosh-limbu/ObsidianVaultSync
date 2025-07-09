@@ -1,11 +1,10 @@
 export function processWikilinks(content: string): string {
-  // Convert [[wikilink]] to markdown links
+  // Convert [[wikilink]] to HTML links for ReactMarkdown
   return content.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
     const [title, displayText] = linkText.split('|');
     const display = displayText || title;
-    const result = `[${display}](wikilink:${title})`;
-    console.log('Processed wikilink:', match, '->', result);
-    return result;
+    // Use HTML anchor tag to avoid markdown parsing issues with spaces
+    return `<a href="wikilink:${encodeURIComponent(title)}" class="wikilink">${display}</a>`;
   });
 }
 

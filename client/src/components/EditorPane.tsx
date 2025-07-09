@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { processWikilinks } from "@/lib/markdownUtils";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import FloatingToolbar from "./FloatingToolbar";
 import type { File, Vault } from "@shared/schema";
 
@@ -69,10 +70,45 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
   };
+  
+  const handleTextareaKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+    const { selectionStart, selectionEnd } = target;
+    
+    // Auto-closing brackets
+    const pairs: { [key: string]: string } = {
+      '[': ']',
+      '(': ')',
+      '{': '}',
+      '"': '"',
+      "'": "'",
+      '`': '`',
+      '*': '*',
+      '_': '_',
+    };
+    
+    if (pairs[e.key]) {
+      e.preventDefault();
+      const before = content.substring(0, selectionStart);
+      const selected = content.substring(selectionStart, selectionEnd);
+      const after = content.substring(selectionEnd);
+      
+      const newContent = before + e.key + selected + pairs[e.key] + after;
+      setContent(newContent);
+      
+      // Set cursor position between the brackets
+      setTimeout(() => {
+        target.selectionStart = target.selectionEnd = selectionStart + 1 + selected.length;
+      }, 0);
+    }
+  };
 
-  const handleWikilinkClick = (linkTitle: string) => {
-    console.log('Wikilink clicked:', linkTitle);
-    console.log('Available files:', files.map(f => f.name));
+  const handleWikilinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    if (!href?.startsWith('wikilink:')) return;
+    
+    const linkTitle = decodeURIComponent(href.replace('wikilink:', ''));
     
     // Find the target file by name or path
     const targetFile = files.find(f => {
@@ -86,8 +122,6 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
              pathWithoutExt === linkWithoutExt ||
              nameWithoutExt.toLowerCase() === linkWithoutExt.toLowerCase();
     });
-
-    console.log('Target file found:', targetFile);
     
     if (targetFile) {
       onFileSelect(targetFile);
@@ -127,6 +161,7 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
           <Textarea
             value={content}
             onChange={(e) => handleContentChange(e.target.value)}
+            onKeyDown={handleTextareaKeyDown}
             placeholder="Start writing your note..."
             className="w-full h-full bg-transparent text-obsidian-text font-mono text-sm resize-none border-none outline-none leading-relaxed"
             style={{ 
@@ -151,28 +186,15 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
           onNewNote={onNewNote}
         />
         <ScrollArea className="h-full">
-          <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none">
+          <div className="p-6 max-w-4xl mx-auto prose prose-invert max-w-none" onClick={(e: any) => {
+            // Handle clicks on wikilinks
+            if (e.target.tagName === 'A' && e.target.getAttribute('href')?.startsWith('wikilink:')) {
+              handleWikilinkClick(e);
+            }
+          }}>
             <ReactMarkdown
+              rehypePlugins={[rehypeRaw]}
               components={{
-                a: ({ href, children, ...props }) => {
-                  if (href?.startsWith('wikilink:')) {
-                    const linkTitle = href.replace('wikilink:', '');
-                    return (
-                      <a 
-                        href="#"
-                        className="wikilink text-obsidian-accent hover:text-obsidian-secondary cursor-pointer underline"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleWikilinkClick(linkTitle);
-                        }}
-                        {...props}
-                      >
-                        {children}
-                      </a>
-                    );
-                  }
-                  return <a href={href} {...props}>{children}</a>;
-                },
                 h1: ({ children, ...props }) => (
                   <h1 className="text-2xl font-bold text-obsidian-text mb-4" {...props}>
                     {children}
@@ -247,6 +269,7 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
           <Textarea
             value={content}
             onChange={(e) => handleContentChange(e.target.value)}
+            onKeyDown={handleTextareaKeyDown}
             placeholder="Start writing your note..."
             className="w-full h-full bg-transparent text-obsidian-text font-mono text-sm resize-none border-none outline-none leading-relaxed"
             style={{ 
@@ -261,28 +284,15 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
       
       <div className="flex-1 obsidian-bg">
         <ScrollArea className="h-full">
-          <div className="p-6 prose prose-invert max-w-none">
+          <div className="p-6 prose prose-invert max-w-none" onClick={(e: any) => {
+            // Handle clicks on wikilinks
+            if (e.target.tagName === 'A' && e.target.getAttribute('href')?.startsWith('wikilink:')) {
+              handleWikilinkClick(e);
+            }
+          }}>
             <ReactMarkdown
+              rehypePlugins={[rehypeRaw]}
               components={{
-                a: ({ href, children, ...props }) => {
-                  if (href?.startsWith('wikilink:')) {
-                    const linkTitle = href.replace('wikilink:', '');
-                    return (
-                      <a 
-                        href="#"
-                        className="wikilink text-obsidian-accent hover:text-obsidian-secondary cursor-pointer underline"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleWikilinkClick(linkTitle);
-                        }}
-                        {...props}
-                      >
-                        {children}
-                      </a>
-                    );
-                  }
-                  return <a href={href} {...props}>{children}</a>;
-                },
                 h1: ({ children, ...props }) => (
                   <h1 className="text-2xl font-bold text-obsidian-text mb-4" {...props}>
                     {children}
