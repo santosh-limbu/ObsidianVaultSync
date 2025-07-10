@@ -120,7 +120,7 @@ Start writing your thoughts here...
   };
 
   useEffect(() => {
-    if (vaults && vaults.length > 0 && !currentVault) {
+    if (!currentVault && vaults?.length) {
       setCurrentVault(vaults[0]);
     }
   }, [vaults, currentVault]);
