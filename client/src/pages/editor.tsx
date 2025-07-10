@@ -28,29 +28,55 @@ export default function Editor() {
     enabled: !!currentVault,
   });
 
-  const createNoteMutation = useMutation({
-    mutationFn: async (newNote: { name: string; content: string }) => {
-      if (!currentVault) throw new Error('No vault selected');
-      
-      return await apiRequest(`/api/files`, {
-        method: 'POST',
-        body: JSON.stringify({
-          vaultId: currentVault.id,
-          name: newNote.name,
-          content: newNote.content,
-          path: `/${newNote.name}`,
-          isFolder: false,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    },
-    onSuccess: (newFile) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/vaults', currentVault?.id, 'files'] });
-      handleFileSelect(newFile);
-    },
-  });
+const createNoteMutation = useMutation({
+  mutationFn: async (newNote: { name: string; content: string }) => {
+    if (!currentVault) throw new Error('No vault selected');
+    return await apiRequest(`/api/files`, {
+      method: 'POST',
+      body: JSON.stringify({
+        vaultId: currentVault.id,
+        name: newNote.name,
+        content: newNote.content,
+        path: `/${newNote.name}`,
+        isFolder: false,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  },
+  onMutate: async (newNote) => {
+    await queryClient.cancelQueries({ queryKey: ['/api/vaults', currentVault?.id, 'files'] });
+
+    const previousFiles = queryClient.getQueryData(['/api/vaults', currentVault?.id, 'files']);
+
+    queryClient.setQueryData(['/api/vaults', currentVault?.id, 'files'], (old: File[] | undefined) => {
+      const newFile: File = {
+        id: Date.now(), // Temporary ID
+        vaultId: currentVault!.id,
+        name: newNote.name,
+        content: newNote.content,
+        path: `/${newNote.name}`,
+        isFolder: false,
+        parentId: null,
+        driveFileId: null,
+        lastModified: new Date(),
+      };
+      return old ? [...old, newFile] : [newFile];
+    });
+
+    return { previousFiles };
+  },
+  onError: (err, newNote, context) => {
+    queryClient.setQueryData(['/api/vaults', currentVault?.id, 'files'], context?.previousFiles);
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: ['/api/vaults', currentVault?.id, 'files'] });
+  },
+  onSuccess: (newFile) => {
+    handleFileSelect(newFile);
+  },
+});
 
   const handleFileSelect = (file: File) => {
     setCurrentFile(file);
