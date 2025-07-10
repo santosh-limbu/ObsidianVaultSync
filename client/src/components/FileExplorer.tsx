@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -39,29 +39,35 @@ export default function FileExplorer({
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedFolders, setExpandedFolders] = useState<Set<number>>(new Set());
 
-  const buildFileTree = (files: File[]): FileTreeNode[] => {
-    const rootFiles = files.filter(file => !file.parentId);
-    
-    const buildNode = (file: File): FileTreeNode => {
-      const children = files
-        .filter(f => f.parentId === file.id)
-        .map(buildNode);
-      
-      return {
-        file,
-        children,
-        isExpanded: expandedFolders.has(file.id),
+  // Memoize the filtered files based on searchQuery and files
+  const filteredFiles = useMemo(() => {
+    if (!searchQuery) return files;
+    return files.filter(file =>
+      file.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [files, searchQuery]);
+
+  // Memoize the file tree based on filteredFiles and expandedFolders
+  const fileTree = useMemo(() => {
+    const buildFileTree = (files: File[]): FileTreeNode[] => {
+      const rootFiles = files.filter(file => !file.parentId);
+
+      const buildNode = (file: File): FileTreeNode => {
+        const children = files
+          .filter(f => f.parentId === file.id)
+          .map(buildNode);
+
+        return {
+          file,
+          children,
+          isExpanded: expandedFolders.has(file.id),
+        };
       };
+
+      return rootFiles.map(buildNode);
     };
-
-    return rootFiles.map(buildNode);
-  };
-
-  const filteredFiles = files.filter(file =>
-    file.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const fileTree = buildFileTree(searchQuery ? filteredFiles : files);
+    return buildFileTree(filteredFiles);
+  }, [filteredFiles, expandedFolders]);
 
   const toggleFolder = (folderId: number) => {
     setExpandedFolders(prev => {
