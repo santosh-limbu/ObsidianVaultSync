@@ -134,44 +134,26 @@ export default function EditorPane({ file, mode, vault, onModeChange, onNewNote,
     }
   };
 
-  const handleWikilinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const href = e.currentTarget.getAttribute('href');
-    if (!href?.startsWith('wikilink:')) return;
-    
-    const linkTitle = decodeURIComponent(href.replace('wikilink:', ''));
-    console.log('Wikilink clicked:', linkTitle);
-    console.log('Available files:', files);
-    
-    // Find the target file by name or path
-    const targetFile = files?.find(f => {
-      const nameWithoutExt = f.name.replace(/\.md$/, '');
-      const linkWithoutExt = linkTitle.replace(/\.md$/, '');
-      const pathWithoutExt = f.path.replace(/\.md$/, '').replace(/^\//, '');
-      
-      const matches = nameWithoutExt === linkWithoutExt || 
-             f.name === linkTitle || 
-             f.name === `${linkTitle}.md` ||
-             pathWithoutExt === linkWithoutExt ||
-             nameWithoutExt.toLowerCase() === linkWithoutExt.toLowerCase();
-             
-      if (matches) {
-        console.log('Found matching file:', f);
-      }
-      
-      return matches;
-    });
-    
-    if (targetFile) {
-      console.log('Selecting file:', targetFile);
-      onFileSelect(targetFile);
-    } else {
-      console.log('No matching file found for:', linkTitle);
-      console.log('Files available:', files?.map(f => ({ name: f.name, path: f.path })));
-    }
-  };
+const handleWikilinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const href = e.currentTarget.getAttribute('href');
+  if (!href?.startsWith('wikilink:')) return;
+
+  const linkTitle = decodeURIComponent(href.replace('wikilink:', ''));
+
+  const targetFile = files?.find(f => {
+    const fileNameWithoutExt = f.name.replace(/\.md$/, '');
+    return fileNameWithoutExt.toLowerCase() === linkTitle.toLowerCase();
+  });
+
+  if (targetFile) {
+    onFileSelect(targetFile);
+  } else {
+    console.log('No matching file found for:', linkTitle);
+  }
+};
 
   const processedContent = processWikilinks(content);
 
